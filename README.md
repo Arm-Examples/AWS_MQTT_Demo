@@ -1,2 +1,2 @@
-# AWS_MQTT_Demo
+# AWS MQTT Demo
 AWS MQTT example using CMSIS solution layers.
