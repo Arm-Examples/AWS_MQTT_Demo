@@ -1,0 +1,32 @@
+solution:
+  description: AWS Cloud Connector Examples
+  created-for: CMSIS-Toolbox@2.6.0
+  cdefault:
+
+  select-compiler:
+    - compiler: AC6
+    - compiler: GCC
+
+  compiler: AC6
+
+  # packs:
+  #   - pack: <vendor>::<pack>@<version>
+
+  build-types:
+    - type: Debug
+      debug: on
+      optimize: none
+    - type: Release
+      debug: off
+      optimize: balanced
+
+  target-types:
+    - type: MyBoard
+      # board: <board name>
+      # variables:
+      #   - Board-Layer: ""
+      #   - Shield-Layer: ""
+      #   - Socket-Layer: ""
+
+  projects:
+    - project: ./Demo.cproject.yml
