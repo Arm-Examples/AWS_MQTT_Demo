@@ -39,7 +39,7 @@ Configure AWS IoT Thing:
     - `keyCLIENT_PRIVATE_KEY_PEM`: Client Private Key
 
 Configure WiFi Access Point (when connecting via WiFi):
-  - Modify the following definitions in [socket_startup.c](Socket/WiFi/socket_startup.c):
+  - Modify the following definitions in `socket_startup.c`
     - `SSID`:          WiFi Access Point SSID
     - `PASSWORD`:      WiFi Access Point Password
     - `SECURITY_TYPE`: WiFi Access Point Security
