@@ -9,8 +9,8 @@ solution:
 
   compiler: AC6
 
-  # packs:
-  #   - pack: <vendor>::<pack>@<version>
+  packs:
+    - pack: ARM::V2M_MPS3_SSE_300_BSP@1.5.0
 
   build-types:
     - type: Debug
@@ -21,6 +21,13 @@ solution:
       optimize: balanced
 
   target-types:
+    - type: AVH
+      board: ARM::V2M-MPS3-SSE-300-FVP
+      variables:
+        - Board-Layer: Board/AVH_MPS3_Corstone-300/Board.clayer.yml
+        - Shield-Layer: ""
+      #   - Socket-Layer: ""
+
     - type: MyBoard
       # board: <board name>
       # variables:
