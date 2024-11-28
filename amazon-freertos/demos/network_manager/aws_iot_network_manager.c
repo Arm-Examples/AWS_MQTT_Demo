@@ -82,7 +82,7 @@
 /**
  * @brief Maximum number of events from underlying layers pending in network manager queue at any time.
  * Events could be generated from underlying layer at a faster rate than they are processed with in network manager
- * subscription callbacks. Queue holds pending events to be procesed by network manager any time.
+ * subscription callbacks. Queue holds pending events to be processed by network manager any time.
  */
 #define NETWORK_MANAGER_EVENT_QUEUE_SIZE         ( 10 )
 
