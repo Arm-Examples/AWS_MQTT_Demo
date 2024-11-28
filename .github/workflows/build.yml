@@ -1,0 +1,51 @@
+name: Send_2_AWS
+on:
+  workflow_dispatch:
+
+  pull_request:
+    branches: [main]
+    paths:
+      - ./**
+
+  push:
+    branches: [main]
+    paths:
+      - ./**
+
+  schedule:
+    - cron: '00 22 * * 0'
+
+# A new triggered workflow run will interrupt an existing workflow run
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # https://github.com/ARM-software/cmsis-actions
+      - name: Activate vcpkg
+        uses: ARM-software/cmsis-actions/vcpkg@v1
+        with: 
+          config: "./vcpkg-configuration.json"
+
+      # https://github.com/ARM-software/cmsis-actions
+      - name: Activate Arm tool license
+        uses: ARM-software/cmsis-actions/armlm@v1
+
+      # Clearify the usage of the following action
+      # https://github.com/ammaraskar/gcc-problem-matcher
+      # https://github.com/actions/toolkit/blob/master/
+      - uses: ammaraskar/gcc-problem-matcher@master
+
+      # Build the executable
+      - name: Build executable
+        run: |
+          cbuild Demo.csolution.yml --packs --context .Debug+AVH --rebuild
+
