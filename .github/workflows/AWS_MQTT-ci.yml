@@ -55,6 +55,8 @@ jobs:
            myIOT_THING_NAME=myValue01
            cd amazon-freertos/demos/include/
            sed -i "s/    #define clientcredentialIOT_THING_NAME    \"\"/    #define clientcredentialIOT_THING_NAME    ${{ secrets.IOT_THING_NAME }}/" aws_clientcredential.h
+           echo $IOT_THING_NAME
+           cat aws_clientcredential.h
            cd ../../../
 
       # Build the executable
