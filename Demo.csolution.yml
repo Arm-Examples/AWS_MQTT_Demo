@@ -15,7 +15,7 @@ solution:
   build-types:
     - type: Debug
       debug: on
-      optimize: none
+      optimize: debug
     - type: Release
       debug: off
       optimize: balanced
@@ -24,9 +24,9 @@ solution:
     - type: AVH
       board: ARM::V2M-MPS3-SSE-300-FVP
       variables:
-        - Board-Layer: Board/AVH_MPS3_Corstone-300/Board.clayer.yml
+        - Board-Layer: $SolutionDir()$/Board/AVH_MPS3_Corstone-300/Board.clayer.yml
         - Shield-Layer: ""
-      #   - Socket-Layer: ""
+        - Socket-Layer: $SolutionDir()$/Socket/VSocket/Socket.clayer.yml
 
     - type: MyBoard
       # board: <board name>
