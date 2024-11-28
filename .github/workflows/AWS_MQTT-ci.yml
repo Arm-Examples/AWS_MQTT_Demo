@@ -52,11 +52,9 @@ jobs:
           CLIENT_CERTIFICATE_PEM: ${{ secrets.CLIENT_CERTIFICATE_PEM }}
           CLIENT_PRIVATE_KEY_PEM: ${{ secrets.CLIENT_PRIVATE_KEY_PEM }}
         run: |
+           myIOT_THING_NAME=myValue01
            cd amazon-freertos/demos/include/
-           sed -i "s/    #define clientcredentialMQTT_BROKER_ENDPOINT    \"\"/    #define clientcredentialMQTT_BROKER_ENDPOINT    $MQTT_BROKER_ENDPOINT/" aws_clientcredential.h
-           sed -i "s/    #define clientcredentialIOT_THING_NAME    \"\"/    #define clientcredentialIOT_THING_NAME    $IOT_THING_NAME/" aws_clientcredential.h
-           sed -i "s/    #define keyCLIENT_CERTIFICATE_PEM    NULL/    #define keyCLIENT_CERTIFICATE_PEM    $CLIENT_CERTIFICATE_PEM/" aws_clientcredential_keys.h
-           sed -i "s/    #define keyCLIENT_PRIVATE_KEY_PEM    NULL/    #define keyCLIENT_CERTIFICATE_PEM    $CLIENT_PRIVATE_KEY_PEM/" aws_clientcredential_keys.h
+           sed -i "s/    #define clientcredentialIOT_THING_NAME    \"\"/    #define clientcredentialIOT_THING_NAME    $myIOT_THING_NAME/" aws_clientcredential.h
            cd ../../../
 
       # Build the executable
