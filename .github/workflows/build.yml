@@ -47,5 +47,5 @@ jobs:
       # Build the executable
       - name: Build executable
         run: |
-          cbuild Demo.csolution.yml --packs --context Debug+AVH --rebuild
+          cbuild Demo.csolution.yml --packs --context .Debug+AVH --rebuild
 
