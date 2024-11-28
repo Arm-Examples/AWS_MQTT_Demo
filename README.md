@@ -44,7 +44,7 @@ To run the demo application [*configure the AWS IoT Thing*](https://docs.aws.ama
 
 ## Run on AVH FVP Simulation Model
 
-Once the AWS IoT Thing is configured it can be build and run on AVH FVP simulation models.
+Once the *AWS IoT Thing* is configured it can be build and run on AVH FVP simulation models.
 
 ```bash
 cbuild Demo.csolution.yml --context .Debug+AVH --packs
@@ -60,49 +60,90 @@ The MQTT messages can be viewed in the [**AWS IoT console**](https://docs.aws.am
 
 ## [Contiguous Integration (CI)](https://github.com/Arm-Examples/AWS_MQTT_Demo/tree/main/.ci)
 
-The directory [`.ci`](https://github.com/Arm-Examples/AWS_MQTT_Demo/tree/main/.ci) contains [GitHub Actions](https://github.com/Arm-Examples/AWS_MQTT_Demo/tree/main/.github/workflows) for build and execution tests. It executes similar steps on a GitHub Runner.
+The directory [`.ci`](https://github.com/Arm-Examples/AWS_MQTT_Demo/tree/main/.ci) describes the [GitHub Actions](https://github.com/Arm-Examples/AWS_MQTT_Demo/tree/main/.github/workflows) for build and execution tests. It executes similar steps on a GitHub Runner.
 
 ## Configure for Evaluation Boards
 
-Only when connecting via WiFi Access Point:
+The **AWS MQTT Demo** can be deployed to physical evaluation boards using these steps:
 
-- Modify the following definitions in `Socket/WiFi/socket_startup.c`
-  - `SSID`:          WiFi Access Point SSID
-  - `PASSWORD`:      WiFi Access Point Password
-  - `SECURITY_TYPE`: WiFi Access Point Security
+- The [`pack: MDK-Packs::IoT_Socket`](https://www.keil.arm.com/packs/iot_socket-mdk-packs) is the interface to the [communication stack](https://mdk-packs.github.io/IoT_Socket/latest/iot_socket_using.html#iot_socket_select).
+- Select a Board that offers suitable board layer. Several [Board Support Packs for ST Boards](https://www.keil.arm.com/boards/?q=&vendor=stmicroelectronics) contain a suitable board layer for this MQTT example. The pack overview lists the [Provided API Interfaces](https://www.keil.arm.com/packs/nucleo-f756zg_bsp-keil). The IoT Socket interface requires for Ethernet `CMSIS_ETH`, for WiFi `ARDUINO_UNO_I2C` or `ARDUINO_UNO_UART`.
+- The [`pack: ARM::CMSIS-Driver`](https://www.keil.arm.com/packs/cmsis-driver-arm) provides the layers for various [WiFi modules](https://arm-software.github.io/CMSIS-Driver/latest/shield_layer.html#shield_WiFi). These connect to boards that provide Arduino connectors.
 
-## Retarget to Custom Hardware
+Depending on the selected hardware, the file [`Demo.csolution.yml`](Demo.csolution.yml) is configured.  Below the configuration for `NUCLEO-F756ZG` is shown.
 
-Application requires setting of the following layers defined by the variables:
+```yml
+   packs:
+    - pack: ARM::V2M_MPS3_SSE_300_BSP@1.5.0
+    - pack: Keil::NUCLEO-F756ZG_BSP@2.0.0       # Add BSP
+    - pack: ARM::CMSIS-Driver@2.10.0            # Add CMSIS-Driver for WiFi Shields
 
-- Board-Layer
-- Shield-Layer (optional)
-- Socket-Layer
+  target-types:
+    - type: AVH
+      board: ARM::V2M-MPS3-SSE-300-FVP
+        :
 
-To set the board layer (i.e. to specify the "Board-Layer") one shall first install the BSP or DFP for the board in use. To list the name of the available boards use the command:
+    - type: MyBoard
+      board: NUCLEO-F756ZG                      # Add board name
+```
+
+### Using [Keil Studio for VS Code](https://www.keil.arm.com/)
+
+Once, the file [`Demo.csolution.yml`](Demo.csolution.yml) is configured, use the **Manage Solution** view and change the **Active Target**.
+
+![Select Context Set](.ci/ContextSet.png)
+
+The IDE will evaluate the compatible software layers and shows the **Configure Solution** view. Depending on the board several options can be selected.  Click **OK** to choose a selection.
+
+![Add Software Layer](.ci/AddSoftwareLayer.png)
+
+This completes the setup and the file [`Demo.csolution.yml`](Demo.csolution.yml) now contains the settings for the layers.
+
+```yml
+  target-types:
+    - type: AVH
+      board: ARM::V2M-MPS3-SSE-300-FVP
+        :
+    - type: MyBoard
+      board: NUCLEO-F756ZG
+      variables:
+        - Board-Layer: $SolutionDir()$/Board/NUCLEO-F756ZG/Board.clayer.yml
+        - Shield-Layer: $SolutionDir()$/Shield/WiFi/Sparkfun_DA16200/Shield.clayer.yml
+        - Socket-Layer: $SolutionDir()$/Socket/WiFi/Socket.clayer.yml
+```
+
+Use **Build solution** to translate the application.
+
+### Manual Configuration
+
+Refer to [CMSIS-Toolbox - Reference Applications - Usage](https://github.com/Open-CMSIS-Pack/cmsis-toolbox/blob/main/docs/ReferenceApplications.md#usage) for use command line tools to obtain above information.  However you may also use the CMSIS-Toolbox command `csolution list layers` to obtain information about the layers that are available in the installed packs.  These layers may be copied to your project directory and defined as shown above.
 
 ```bash
-csolution list boards
+csolution list layers
+.../Arm/Packs/ARM/CMSIS-Driver/2.10.0/Shield/WiFi/Inventek_ISMART43362-E/Shield.clayer.yml (layer type: Shield)
+.../Arm/Packs/ARM/CMSIS-Driver/2.10.0/Shield/WiFi/Sparkfun_DA16200/Shield.clayer.yml (layer type: Shield)
+.../Arm/Packs/ARM/CMSIS-Driver/2.10.0/Shield/WiFi/Sparkfun_ESP8266/Shield.clayer.yml (layer type: Shield)
+.../Arm/Packs/ARM/CMSIS-Driver/2.10.0/Shield/WiFi/WizNet_WizFi360-EVB/Shield.clayer.yml (layer type: Shield)
+.../Arm/Packs/Keil/NUCLEO-F756ZG_BSP/2.0.0/Layers/Default/Board.clayer.yml (layer type: Board)
+.../Arm/Packs/MDK-Packs/IoT_Socket/1.4.0/layer/FreeRTOS_Plus_TCP/Socket.clayer.yml (layer type: Socket)
+.../Arm/Packs/MDK-Packs/IoT_Socket/1.4.0/layer/MDK_Network_ETH/Socket.clayer.yml (layer type: Socket)
+.../Arm/Packs/MDK-Packs/IoT_Socket/1.4.0/layer/VSocket/Socket.clayer.yml (layer type: Socket)
+.../Arm/Packs/MDK-Packs/IoT_Socket/1.4.0/layer/WiFi/Socket.clayer.yml (layer type: Socket)
 ```
 
-This command will also list the respective pack name and version. To continue, follow the instruction on [how to configure the Reference Application](https://github.com/Open-CMSIS-Pack/cmsis-toolbox/blob/main/docs/ReferenceApplications.md#usage).
+Use **cbuild** to translate the application.
 
->Note: AVH target is already configured with board and variables specified.
-
-
-## Build
-
-```
-cbuild Demo.csolution --context Demo.Debug+<target-type>
+```bash
+cbuild Demo.csolution.yml --context .Debug+MyBoard --packs
 ```
 
-## Program
+## Build and Run
 
-- Download the executable file (.axf) to the microcontroller using a programmer or Drag-and-drop programming if available.
->Note: not required for Virtual Hardware.
+Once the application is translated use:
 
-## Run
-
-- Connect and configure the debugger.
+- A programmer or debugger to download the application.
 - Run the application and view messages in a debug printf or terminal window.
 
+## Issues
+
+Please feel free to raise an [issue](https://github.com/Arm-Examples/AWS_MQTT_Demo/issuesW) on GitHub to report problems.
