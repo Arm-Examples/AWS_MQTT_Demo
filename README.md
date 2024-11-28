@@ -26,7 +26,7 @@ csolution list boards
 ```
 This command will also list the respective pack name and version. To continue, follow the instruction on [how to configure the Reference Application](https://github.com/Open-CMSIS-Pack/cmsis-toolbox/blob/main/docs/ReferenceApplications.md#usage).
 
->Note: "board" and "Board-Layer" are already specified for the AVH target.
+>Note: AVH target is already configured with board and variables specified.
 
 ## Configure
 
