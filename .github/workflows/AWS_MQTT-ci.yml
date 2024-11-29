@@ -66,8 +66,8 @@ jobs:
           echo IOT Name
           echo $VAR_IOT_THING_NAME
 
-          sed -i "s:    #define clientcredentialMQTT_BROKER_ENDPOINT    "":    #define clientcredentialMQTT_BROKER_ENDPOINT    $VAR_MQTT_BROKER_ENDPOINT:" aws_clientcredential.h
-          sed -i "s:    #define clientcredentialIOT_THING_NAME    "":    #define clientcredentialIOT_THING_NAME    $VAR_IOT_THING_NAME:" aws_clientcredential.h
+          sed -i "s:    #define clientcredentialMQTT_BROKER_ENDPOINT    \"\":    #define clientcredentialMQTT_BROKER_ENDPOINT    $VAR_MQTT_BROKER_ENDPOINT:" aws_clientcredential.h
+          sed -i "s:    #define clientcredentialIOT_THING_NAME    \"\":    #define clientcredentialIOT_THING_NAME    $VAR_IOT_THING_NAME:" aws_clientcredential.h
 
           cat aws_clientcredential.h
           cat aws_clientcredential_keys.h
