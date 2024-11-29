@@ -48,13 +48,49 @@ Once the *AWS IoT Thing* is configured it can be build and run on AVH FVP simula
 
 ```bash
 cbuild Demo.csolution.yml --context .Debug+AVH --packs
-
-ToDo add FVP command 
+FVP_Corstone_SSE-300 -f Board/AVH_MPS3_Corstone-300/fvp_config.txt out/Demo/AVH/Debug/Demo.axf -Q 10
 ```
 
 The execution on AVH FVP simulation models should create this output:
 
-ToDo Show typical output
+```txt
+0 0 [iot_thread] [INFO ][DEMO][0] ---------STARTING DEMO---------
+1 1 [iot_thread] [INFO ][INIT][1] SDK successfully initialized.
+2 1 [iot_thread] [INFO ][DEMO][1] Successfully initialized the demo. Network type for the demo: 4
+3 2 [iot_thread] [INFO] Creating a TLS connection to xxx-ats.iot.us-east-2.amazonaws.com:8883.
+4 3161 [iot_thread] [INFO] Creating an MQTT connection to xxx-ats.iot.us-east-2.amazonaws.com.
+...
+10 3323 [iot_thread] [INFO] An MQTT connection is established with xxx-ats.iot.us-east-2.amazonaws.com.
+11 3324 [iot_thread] [INFO] Attempt to subscribe to the MQTT topic thing/example/topic.
+12 3325 [iot_thread] [INFO] SUBSCRIBE sent for topic thing/example/topic to broker.
+13 3465 [iot_thread] [INFO] Packet received. ReceivedBytes=3.
+14 3465 [iot_thread] [INFO] Subscribed to the topic thing/example/topic with maximum QoS 1.
+15 4465 [iot_thread] [INFO] Publish to the MQTT topic thing/example/topic.
+16 4465 [iot_thread] [INFO] Attempt to receive publish message from broker.
+17 4726 [iot_thread] [INFO] Packet received. ReceivedBytes=2.
+18 4726 [iot_thread] [INFO] Ack packet deserialized with result: MQTTSuccess.
+19 4726 [iot_thread] [INFO] State record updated. New state=MQTTPublishDone.
+20 4727 [iot_thread] [INFO] PUBACK received for packet Id 2.
+21 4757 [iot_thread] [INFO] Packet received. ReceivedBytes=38.
+22 4757 [iot_thread] [INFO] De-serialized incoming PUBLISH packet: DeserializerResult=MQTTSuccess.
+23 4758 [iot_thread] [INFO] State record updated. New state=MQTTPubAckSend.
+24 4758 [iot_thread] [INFO] Incoming QoS : 1
+25 4758 [iot_thread] [INFO] Incoming Publish Topic Name: thing/example/topic matches subscribed topic.Incoming Publish Message : Hello World!
+...
+235 67150 [iot_thread] [INFO] Unsubscribe from the MQTT topic thing/example/topic.
+236 67250 [iot_thread] [INFO] Packet received. ReceivedBytes=2.
+237 67250 [iot_thread] [INFO] Unsubscribed from the topic thing/example/topic.
+238 68250 [iot_thread] [INFO] Disconnecting the MQTT connection with xxx-ats.iot.us-east-2.amazonaws.com.
+239 68250 [iot_thread] [INFO] Disconnected from the broker.
+240 68251 [iot_thread] [INFO] Demo completed an iteration successfully.
+241 68251 [iot_thread] [INFO] Demo iteration 3 completed successfully.
+242 68252 [iot_thread] [INFO] Short delay before starting the next iteration....
+243 73252 [iot_thread] [INFO] Demo run is successful with 3 successful loops out of total 3 loops.
+...
+248 74254 [iot_thread] [INFO ][DEMO][74254] Demo completed successfully.
+249 74254 [iot_thread] [INFO ][INIT][74254] SDK cleanup done.
+250 74255 [iot_thread] [INFO ][DEMO][74254] -------DEMO FINISHED-------
+```
 
 The MQTT messages can be viewed in the [**AWS IoT console**](https://docs.aws.amazon.com/iot/latest/developerguide/view-mqtt-messages.html).
 
