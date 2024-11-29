@@ -56,12 +56,15 @@ jobs:
 
           echo Certificate
           echo $VAR_CLIENT_CERTIFICATE_PEM
+
           echo Private Key
-          echo $VAR_CLIENT_CERTIFICATE_PEM
+          echo $VAR_CLIENT_PRIVATE_KEY_PEM
+
           echo Endpoint
           echo $VAR_MQTT_BROKER_ENDPOINT
+
           echo IOT Name
-          echo $IOT_THING_NAME
+          echo $VAR_IOT_THING_NAME
 
           cat aws_clientcredential.h
           cat aws_clientcredential_keys.h
