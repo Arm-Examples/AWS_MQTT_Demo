@@ -39,11 +39,6 @@ jobs:
       - name: Activate Arm tool license
         uses: ARM-software/cmsis-actions/armlm@v1
 
-      # Clearify the usage of the following action
-      # https://github.com/ammaraskar/gcc-problem-matcher
-      # https://github.com/actions/toolkit/blob/master/
-      - uses: ammaraskar/gcc-problem-matcher@master
-
       # Configure AWS IoT Thing Credentials
       - name: Configure AWS IoT Thing Credentials
         env:
