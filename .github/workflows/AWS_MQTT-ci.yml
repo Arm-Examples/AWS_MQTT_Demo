@@ -51,24 +51,26 @@ jobs:
           IOT_THING_NAME: ${{ secrets.IOT_THING_NAME }}
           CLIENT_CERTIFICATE_PEM: ${{ secrets.CLIENT_CERTIFICATE_PEM }}
           CLIENT_PRIVATE_KEY_PEM: ${{ secrets.CLIENT_PRIVATE_KEY_PEM }}
-          VAR_CLIENT_CERTIFICATE_PEM: ${{ vars.VAR_CLIENT_CERTIFICATE_PEM }}
-          VAR_ML01_CLIENT_CERTIFICATE_PEM: ${{ vars.VAR_ML01_CLIENT_CERTIFICATE_PEM }}
-          VAR_ML02_CLIENT_CERTIFICATE_PEM: ${{ vars.VAR_ML02_CLIENT_CERTIFICATE_PEM }}
-          VAR_ML03_CLIENT_CERTIFICATE_PEM: ${{ vars.VAR_ML03_CLIENT_CERTIFICATE_PEM }}
 
+          VAR_MQTT_BROKER_ENDPOINT: ${{ vars.MQTT_BROKER_ENDPOINT }}
+          VAR_IOT_THING_NAME: ${{ vars.VAR_IOT_THING_NAME }}
+          VAR_CLIENT_CERTIFICATE_PEM: ${{ vars.VAR_CLIENT_CERTIFICATE_PEM }}
+          VAR_CLIENT_PRIVATE_KEY_PEM: ${{ vars.VAR_secrets.CLIENT_PRIVATE_KEY_PEM }}
         run: |
            cd amazon-freertos/demos/include/
+           sed -i "s:    #define keyLIENT_CERTIFICATE_PEM    NULL:    #define keyCLIENT_CERTIFICATE_PEM    $VAR_CLIENT_CERTIFICATE_PEM:" aws_clientcredential_keys.h
+           sed -i "s:    #define keyCLIENT_PRIVATE_KEY_PEM    NULL:    #define keyCLIENT_PRIVATE_KEY_PEM    $VAR_CLIENT_PRIVATE_KEY_PEM:" aws_clientcredential_keys.h
+           sed -i "s:    #define clientcredentialMQTT_BROKER_ENDPOINT    "":    #define clientcredentialMQTT_BROKER_ENDPOINT    $VAR_MQTT_BROKER_ENDPOINT:" aws_clientcredential.h
+           sed -i "s:    #define clientcredentialIOT_THING_NAME    "":    #define clientcredentialIOT_THING_NAME    $VAR_IOT_THING_NAME:" aws_clientcredential.h
 
-           sed -i "s:    #define keyCLIENT_PRIVATE_KEY_PEM    NULL:    #define keyCLIENT_CERTIFICATE_PEM    $CLIENT_CERTIFICATE_PEM:" aws_clientcredential_keys.h
-
-           echo Single line
+           echo Certificate
            echo $VAR_CLIENT_CERTIFICATE_PEM
-           echo Multi line 01
-           echo $VAR_ML01_CLIENT_CERTIFICATE_PEM
-           echo Multi line 02           
-           echo $VAR_ML02_CLIENT_CERTIFICATE_PEM
-           echo Multi line 03
-           echo $VAR_ML03_CLIENT_CERTIFICATE_PEM           
+           echo Private Key
+           echo $VAR_CLIENT_CERTIFICATE_PEM
+           echo Endpoint
+           echo $VAR_MQTT_BROKER_ENDPOINT
+           echo IOT Name
+           echo $IOT_THING_NAME
 
            cat aws_clientcredential.h
            cat aws_clientcredential_keys.h
