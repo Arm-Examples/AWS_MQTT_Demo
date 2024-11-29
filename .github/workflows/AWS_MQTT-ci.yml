@@ -47,7 +47,7 @@ jobs:
       # Configure AWS IoT Thing Credentials
       - name: Configure AWS IoT Thing Credentials
         env:
-          VAR_MQTT_BROKER_ENDPOINT: ${{ vars.MQTT_BROKER_ENDPOINT }}
+          VAR_MQTT_BROKER_ENDPOINT: ${{ vars.VAR_MQTT_BROKER_ENDPOINT }}
           VAR_IOT_THING_NAME: ${{ vars.VAR_IOT_THING_NAME }}
           VAR_CLIENT_CERTIFICATE_PEM: ${{ vars.VAR_CLIENT_CERTIFICATE_PEM }}
           VAR_CLIENT_PRIVATE_KEY_PEM: ${{ vars.VAR_CLIENT_PRIVATE_KEY_PEM }}
