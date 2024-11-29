@@ -52,12 +52,20 @@ jobs:
           CLIENT_CERTIFICATE_PEM: ${{ secrets.CLIENT_CERTIFICATE_PEM }}
           CLIENT_PRIVATE_KEY_PEM: ${{ secrets.CLIENT_PRIVATE_KEY_PEM }}
           VAR_CLIENT_CERTIFICATE_PEM: ${{ vars.VAR_CLIENT_CERTIFICATE_PEM }}
+          VAR_ML01_CLIENT_CERTIFICATE_PEM: ${{ vars.VAR_ML01_CLIENT_CERTIFICATE_PEM }}
+          VAR_ML02_CLIENT_CERTIFICATE_PEM: ${{ vars.VAR_ML02_CLIENT_CERTIFICATE_PEM }}
+          VAR_ML03_CLIENT_CERTIFICATE_PEM: ${{ vars.VAR_ML03_CLIENT_CERTIFICATE_PEM }}
+
         run: |
            cd amazon-freertos/demos/include/
 
            sed -i "s:    #define keyCLIENT_PRIVATE_KEY_PEM    NULL:    #define keyCLIENT_CERTIFICATE_PEM    $CLIENT_CERTIFICATE_PEM:" aws_clientcredential_keys.h
 
            echo $VAR_CLIENT_CERTIFICATE_PEM
+           echo $VAR_ML01_CLIENT_CERTIFICATE_PEM
+           echo $VAR_ML02_CLIENT_CERTIFICATE_PEM
+           echo $VAR_ML03_CLIENT_CERTIFICATE_PEM           
+
            cat aws_clientcredential.h
            cat aws_clientcredential_keys.h
 
