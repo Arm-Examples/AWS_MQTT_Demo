@@ -72,6 +72,7 @@ jobs:
           cat aws_clientcredential.h
 
           sed -i "s:    #define keyCLIENT_CERTIFICATE_PEM    NULL:    #define keyCLIENT_CERTIFICATE_PEM    $VAR_CLIENT_CERTIFICATE_PEM:" aws_clientcredential_keys.h
+          sed -i "s:    #define keyCLIENT_PRIVATE_KEY_PEM    NULL:    #define keyCLIENT_PRIVATE_KEY_PEM    $VAR_CLIENT_PRIVATE_KEY_PEM:" aws_clientcredential_keys.h
 
           cat aws_clientcredential_keys.h
 
