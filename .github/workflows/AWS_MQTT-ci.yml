@@ -70,6 +70,9 @@ jobs:
           sed -i "s:    #define clientcredentialIOT_THING_NAME    \"\":    #define clientcredentialIOT_THING_NAME    $VAR_IOT_THING_NAME:" aws_clientcredential.h
 
           cat aws_clientcredential.h
+
+          sed -i "s:    #define keyLIENT_CERTIFICATE_PEM    NULL:    #define keyCLIENT_CERTIFICATE_PEM    $VAR_CLIENT_CERTIFICATE_PEM:" aws_clientcredential_keys.h
+
           cat aws_clientcredential_keys.h
 
           cd ../../../
