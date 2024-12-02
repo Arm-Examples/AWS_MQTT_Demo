@@ -74,3 +74,10 @@ jobs:
 
 
       # Execute the demo
+      - name: Execute AWS_MQTT demo
+        run: |
+         FVP_Corstone_SSE-300 \
+         -a ./out/Demo/AVH/Debug/Demo.axf \
+         -f ./Board\AVH_MPS3_Corstone-300\fvp_config.txt \
+         -C mps3_board.uart0.out_file=./out/Demo/AWS_MQTT_Demo.log \
+         --simlimit 120 --stat
