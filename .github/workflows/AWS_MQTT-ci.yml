@@ -62,7 +62,7 @@ jobs:
           sed -i 's|\(#define clientcredentialIOT_THING_NAME \).*""|\1 "${IOT_THING_NAME}"|' aws_clientcredential.h.in
           envsubst < aws_clientcredential.h.in > aws_clientcredential.h
 
-          cd -
+          popd
 
       # Build the executable
       - name: Build executable
