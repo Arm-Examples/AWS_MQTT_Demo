@@ -76,4 +76,4 @@ jobs:
          -a ./out/Demo/AVH/Debug/Demo.axf \
          -f ./Board/AVH_MPS3_Corstone-300/fvp_config.txt \
          -C mps3_board.uart0.out_file=./out/Demo/AWS_MQTT_Demo.log \
-         --simlimit 120 --stat -Q10
+         --simlimit 120 --stat -Q 10
