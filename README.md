@@ -94,10 +94,6 @@ The execution on AVH FVP simulation models should create this output:
 
 The MQTT messages can be viewed in the [**AWS IoT console**](https://docs.aws.amazon.com/iot/latest/developerguide/view-mqtt-messages.html).
 
-## [Contiguous Integration (CI)](https://github.com/Arm-Examples/AWS_MQTT_Demo/tree/main/.ci)
-
-The directory [`.ci`](https://github.com/Arm-Examples/AWS_MQTT_Demo/tree/main/.ci) describes the [GitHub Actions](https://github.com/Arm-Examples/AWS_MQTT_Demo/tree/main/.github/workflows) for build and execution tests. It executes similar steps on a GitHub Runner.
-
 ## Configure for Evaluation Boards
 
 The **AWS MQTT Demo** can be deployed to physical evaluation boards using these steps:

@@ -1,0 +1,79 @@
+name: MQTT2AWS
+on:
+  workflow_dispatch:
+
+  pull_request:
+    branches: [main]
+    paths:
+      - ./**
+
+  push:
+    branches: [main]
+    paths:
+      - ./**
+
+  schedule:
+    - cron: '00 22 * * 0'
+
+# A new triggered workflow run will interrupt an existing workflow run
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # https://github.com/ARM-software/cmsis-actions
+      - name: Activate vcpkg
+        uses: ARM-software/cmsis-actions/vcpkg@v1
+        with: 
+          config: "./vcpkg-configuration.json"
+
+      # https://github.com/ARM-software/cmsis-actions
+      - name: Activate Arm tool license
+        uses: ARM-software/cmsis-actions/armlm@v1
+
+      # Configure AWS IoT Thing Credentials
+      - name: Configure AWS IoT Thing Credentials
+        env:
+          # Get the secrets from the Github
+          MQTT_BROKER_ENDPOINT: ${{ secrets.MQTT_BROKER_ENDPOINT }}
+          IOT_THING_NAME: ${{ secrets.IOT_THING_NAME }}
+          CLIENT_CERTIFICATE_PEM: ${{ secrets.CLIENT_CERTIFICATE_PEM }}
+          CLIENT_PRIVATE_KEY_PEM: ${{ secrets.CLIENT_PRIVATE_KEY_PEM }}
+
+        run: |
+          cd amazon-freertos/demos/include/
+          # Add the Client-Certificate Client-Private-Key in aws_clientcredential_keys.h
+          cp aws_clientcredential_keys.h aws_clientcredential_keys.h.in
+          sed -i 's|\(#define keyCLIENT_CERTIFICATE_PEM \).*NULL|\1 ${CLIENT_CERTIFICATE_PEM}|' aws_clientcredential_keys.h.in
+          sed -i 's|\(#define keyCLIENT_PRIVATE_KEY_PEM \).*NULL|\1 ${CLIENT_PRIVATE_KEY_PEM}|' aws_clientcredential_keys.h.in
+          envsubst < aws_clientcredential_keys.h.in > aws_clientcredential_keys.h
+
+          # Add the Client-Credentials in aws_clientcredential.h
+          cp aws_clientcredential.h aws_clientcredential.h.in
+          sed -i 's|\(#define clientcredentialMQTT_BROKER_ENDPOINT \).*""|\1 "${MQTT_BROKER_ENDPOINT}"|' aws_clientcredential.h.in
+          sed -i 's|\(#define clientcredentialIOT_THING_NAME \).*""|\1 "${IOT_THING_NAME}"|' aws_clientcredential.h.in
+          envsubst < aws_clientcredential.h.in > aws_clientcredential.h
+
+          cd ../../../
+
+      # Build the executable
+      - name: Build executable
+        run: |
+          cbuild Demo.csolution.yml --packs --context .Debug+AVH --rebuild
+
+      # Execute the demo
+      - name: Execute AWS_MQTT demo
+        run: |
+         FVP_Corstone_SSE-300 \
+         -a ./out/Demo/AVH/Debug/Demo.axf \
+         -f ./Board/AVH_MPS3_Corstone-300/fvp_config.txt \
+         -C mps3_board.uart0.out_file=./out/Demo/AWS_MQTT_Demo.log \
+         --simlimit 120 --stat -Q 10
