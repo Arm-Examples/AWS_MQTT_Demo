@@ -49,7 +49,7 @@ jobs:
           CLIENT_PRIVATE_KEY_PEM: ${{ secrets.CLIENT_PRIVATE_KEY_PEM }}
 
         run: |
-          cd amazon-freertos/demos/include/
+          pushd amazon-freertos/demos/include/
           # Add the Client-Certificate Client-Private-Key in aws_clientcredential_keys.h
           cp aws_clientcredential_keys.h aws_clientcredential_keys.h.in
           sed -i 's|\(#define keyCLIENT_CERTIFICATE_PEM \).*NULL|\1 ${CLIENT_CERTIFICATE_PEM}|' aws_clientcredential_keys.h.in
@@ -62,7 +62,7 @@ jobs:
           sed -i 's|\(#define clientcredentialIOT_THING_NAME \).*""|\1 "${IOT_THING_NAME}"|' aws_clientcredential.h.in
           envsubst < aws_clientcredential.h.in > aws_clientcredential.h
 
-          cd ../../../
+          cd -
 
       # Build the executable
       - name: Build executable
