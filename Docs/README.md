@@ -39,10 +39,10 @@ GitHub Secret name             | Original or issued format           | Github Se
 
 **F3**: The issued Private Key format is a multiline string like:
 ```
------BEGIN CERTIFICATE-----
+-----BEGIN RSA PRIVATE KEY-----
 ::::::::::::::::::::::::::::::::::::::::::::::
 ::::::::::::::::::::::::::::::::::::::::::::::
------END CERTIFICATE-----
+-----END RSA PRIVATE KEY-----
 ```
 
 **F4**: The expected Private Key format must be a double-quoted singleline string. i.e.
