@@ -94,6 +94,9 @@ The execution on AVH FVP simulation models should create this output:
 
 The MQTT messages can be viewed in the [**AWS IoT console**](https://docs.aws.amazon.com/iot/latest/developerguide/view-mqtt-messages.html).
 
+## [Contiguous Integration (CI)](https://github.com/Arm-Examples/AWS_MQTT_Demo/tree/main/.doc/README.md)
+The [README.md](https://github.com/Arm-Examples/AWS_MQTT_Demo/tree/main/.doc/README.md) in the [`.doc`](https://github.com/Arm-Examples/AWS_MQTT_Demo/tree/main/.doc) folder describes the [GitHub Actions](https://github.com/Arm-Examples/AWS_MQTT_Demo/tree/main/.github/workflows) for build and execution tests. It executes similar steps on a GitHub Runner.
+
 ## Configure for Evaluation Boards
 
 The **AWS MQTT Demo** can be deployed to physical evaluation boards using these steps:
@@ -123,11 +126,11 @@ Depending on the selected hardware, the file [`Demo.csolution.yml`](Demo.csoluti
 
 Once, the file [`Demo.csolution.yml`](Demo.csolution.yml) is configured, use the **Manage Solution** view and change the **Active Target**.
 
-![Select Context Set](.ci/ContextSet.png)
+![Select Context Set](.doc/ContextSet.png)
 
 The IDE will evaluate the compatible software layers and shows the **Configure Solution** view. Depending on the board several options can be selected.  Click **OK** to choose a selection.
 
-![Add Software Layer](.ci/AddSoftwareLayer.png)
+![Add Software Layer](.doc/AddSoftwareLayer.png)
 
 This completes the setup and the file [`Demo.csolution.yml`](Demo.csolution.yml) now contains the settings for the layers.
 
