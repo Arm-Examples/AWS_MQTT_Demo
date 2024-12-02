@@ -1,4 +1,4 @@
-name: Send_2_AWS
+name: MQTT2AWS
 on:
   workflow_dispatch:
 
