@@ -56,14 +56,10 @@ jobs:
           sed -i 's|\(#define keyCLIENT_PRIVATE_KEY_PEM \).*NULL|\1 ${CLIENT_PRIVATE_KEY_PEM}|' aws_clientcredential_keys.h.in
           envsubst < aws_clientcredential_keys.h.in > aws_clientcredential_keys.h
 
-          cat aws_clientcredential_keys.h
-
           cp aws_clientcredential.h aws_clientcredential.h.in
           sed -i 's|\(#define clientcredentialMQTT_BROKER_ENDPOINT \).*""|\1 "${MQTT_BROKER_ENDPOINT}"|' aws_clientcredential.h.in
           sed -i 's|\(#define clientcredentialIOT_THING_NAME \).*""|\1 "${IOT_THING_NAME}"|' aws_clientcredential.h.in
           envsubst < aws_clientcredential.h.in > aws_clientcredential.h
-
-          cat aws_clientcredential.h
 
           cd ../../../
 
@@ -78,6 +74,6 @@ jobs:
         run: |
          FVP_Corstone_SSE-300 \
          -a ./out/Demo/AVH/Debug/Demo.axf \
-         -f ./Board\AVH_MPS3_Corstone-300\fvp_config.txt \
+         -f ./Board/AVH_MPS3_Corstone-300/fvp_config.txt \
          -C mps3_board.uart0.out_file=./out/Demo/AWS_MQTT_Demo.log \
          --simlimit 120 --stat
