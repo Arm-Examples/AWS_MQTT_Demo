@@ -78,11 +78,19 @@ jobs:
          -C mps3_board.uart0.out_file=./out/Demo/AWS_MQTT_Demo.log \
          --simlimit 120 --stat -Q 10
 
+      # Upload the AWS_MQTT_Demo.log to artifact.
+      # Set the maximum retention period of 1 day.
+      - name: Upload the AWS_MQTT_Demo.log
+        uses: actions/upload-artifact@v4
+        with:
+          name: AWS_MQTT_Demo.log
+          path: ./out/Demo/AWS_MQTT_Demo.log
+          retention-days: 1
+
       # Analyze results
       - name: Analyze results
         run: |
          echo "Checking if a MQTT packet has been received"
-         cat ./out/Demo/AWS_MQTT_Demo.log
          if [ "$(grep -c "[iot_thread] [INFO] De-serialized incoming PUBLISH packet: DeserializerResult=MQTTSuccess." ./out/Demo/AWS_MQTT_Demo.log)" -eq 1 ]
          then 
                  exit 0
