@@ -82,6 +82,7 @@ jobs:
       - name: Analyze results
         run: |
          echo "Checking if a MQTT packet has been received"
+         cat ./out/Demo/AWS_MQTT_Demo.log
          if [ "$(grep -c "[iot_thread] [INFO] De-serialized incoming PUBLISH packet: DeserializerResult=MQTTSuccess." ./out/Demo/AWS_MQTT_Demo.log)" -eq 1 ]
          then 
                  exit 0
