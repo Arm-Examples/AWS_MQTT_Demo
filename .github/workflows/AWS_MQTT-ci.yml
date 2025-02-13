@@ -77,3 +77,14 @@ jobs:
          -f ./Board/AVH_MPS3_Corstone-300/fvp_config.txt \
          -C mps3_board.uart0.out_file=./out/Demo/AWS_MQTT_Demo.log \
          --simlimit 120 --stat -Q 10
+
+      # Analyze results
+      - name: Analyze results
+        run: |
+         echo "Checking if a MQTT packet has been received"
+         if [ "$(grep -c "[iot_thread] [INFO] De-serialized incoming PUBLISH packet: DeserializerResult=MQTTSuccess." ./out/Demo/AWS_MQTT_Demo.log)" -eq 1 ]
+         then 
+                 exit 0
+         else 
+                 exit 1
+         fi
