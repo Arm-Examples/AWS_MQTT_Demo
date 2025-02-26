@@ -17,7 +17,7 @@ successfully run the demo application.
 
 ## Project Structure
 
-This AWS MQTT Mutual Authentication example uses the [CMSIS-Toolbox](https://github.com/Open-CMSIS-Pack/cmsis-toolbox/blob/main/docs/README.md#cmsis-toolbox)
+This AWS MQTT Mutual Authentication example uses the [CMSIS-Toolbox](https://open-cmsis-pack.github.io/cmsis-toolbox/)
 *csolution project format* with CMSIS software packs and software layers. The default configuration uses a AVH-FVP simulation model.
 No physical hardware is required to explore this example. By using different layers it can run on physical evaluation boards,
 use different communication stacks, or WiFi modules.
@@ -151,7 +151,7 @@ Use **Build solution** to translate the application.
 
 ### Manual Configuration
 
-Refer to [CMSIS-Toolbox - Reference Applications - Usage](https://github.com/Open-CMSIS-Pack/cmsis-toolbox/blob/main/docs/ReferenceApplications.md#usage) for use command line tools to obtain above information.  However you may also use the CMSIS-Toolbox command `csolution list layers` to obtain information about the layers that are available in the installed packs.  These layers may be copied to your project directory and defined as shown above.
+Refer to [CMSIS-Toolbox - Reference Applications - Usage](https://open-cmsis-pack.github.io/cmsis-toolbox/ReferenceApplications/#usage) for use command line tools to obtain above information.  However you may also use the CMSIS-Toolbox command `csolution list layers` to obtain information about the layers that are available in the installed packs.  These layers may be copied to your project directory and defined as shown above.
 
 ```bash
 csolution list layers
