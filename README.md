@@ -6,7 +6,7 @@
 This demo application connects to **AWS MQTT broker** using TLS with mutual authentication between the client and the server.
 It demonstrates the subscribe-publish workflow of MQTT.
 
-Visit [*coreMQTT mutual authentication demo*](https://docs.aws.amazon.com/freertos/latest/userguide/mqtt-demo-ma.html) for further information. 
+Visit [*coreMQTT Demo (Mutual Authentication)*](https://www.freertos.org/Documentation/03-Libraries/03-FreeRTOS-core/02-coreMQTT/02-Demos/03-Mutual-authentication) for further information. 
 Please note, that [*properly configured thing*](https://docs.aws.amazon.com/iot/latest/developerguide/iot-moisture-create-thing.html) is required to
 successfully run the demo application.
 
@@ -34,13 +34,12 @@ Project File                                                                 | D
 
 To run the demo application [*configure the AWS IoT Thing*](https://docs.aws.amazon.com/iot/latest/developerguide/iot-moisture-create-thing.html) with these steps:
 
-- Modify the following definitions in [config_files/aws_clientcredential.h](amazon-freertos/demos/include/aws_clientcredential.h):
-  - `clientcredentialMQTT_BROKER_ENDPOINT`: Remote Host Address (AWS IoT->Settings in AWS IoT console)
-  - `clientcredentialIOT_THING_NAME`: Thing Name (AWS IoT->Manage->Things->Name in AWS IoT console)
-
-- Modify the following definitions in [config_files/aws_clientcredential_keys.h](amazon-freertos/demos/include/aws_clientcredential_keys.h):
-  - `keyCLIENT_CERTIFICATE_PEM`: Client Certificate
-  - `keyCLIENT_PRIVATE_KEY_PEM`: Client Private Key
+- Modify the following definitions in [FreeRTOS-Plus/Demo/Config/demo_config.h](FreeRTOS-Plus/Demo/Config/demo_config.h):
+  - `democonfigCLIENT_IDENTIFIER`: Thing Name (AWS IoT->Manage->Things->Name in AWS IoT console)
+  - `democonfigMQTT_BROKER_ENDPOINT`: Remote Host Address (AWS IoT->Settings in AWS IoT console)
+  - `democonfigROOT_CA_PEM`: Server's root CA Certificate
+  - `democonfigCLIENT_CERTIFICATE_PEM`: Client Certificate
+  - `democonfigCLIENT_PRIVATE_KEY_PEM`: Client Private Key
 
 ## Run on AVH FVP Simulation Model
 
@@ -54,42 +53,46 @@ FVP_Corstone_SSE-300 -f Board/AVH_MPS3_Corstone-300/fvp_config.txt out/Demo/AVH/
 The execution on AVH FVP simulation models should create this output:
 
 ```txt
-0 0 [iot_thread] [INFO ][DEMO][0] ---------STARTING DEMO---------
-1 1 [iot_thread] [INFO ][INIT][1] SDK successfully initialized.
-2 1 [iot_thread] [INFO ][DEMO][1] Successfully initialized the demo. Network type for the demo: 4
-3 2 [iot_thread] [INFO] Creating a TLS connection to xxx-ats.iot.us-east-2.amazonaws.com:8883.
-4 3161 [iot_thread] [INFO] Creating an MQTT connection to xxx-ats.iot.us-east-2.amazonaws.com.
-...
-10 3323 [iot_thread] [INFO] An MQTT connection is established with xxx-ats.iot.us-east-2.amazonaws.com.
-11 3324 [iot_thread] [INFO] Attempt to subscribe to the MQTT topic thing/example/topic.
-12 3325 [iot_thread] [INFO] SUBSCRIBE sent for topic thing/example/topic to broker.
-13 3465 [iot_thread] [INFO] Packet received. ReceivedBytes=3.
-14 3465 [iot_thread] [INFO] Subscribed to the topic thing/example/topic with maximum QoS 1.
-15 4465 [iot_thread] [INFO] Publish to the MQTT topic thing/example/topic.
-16 4465 [iot_thread] [INFO] Attempt to receive publish message from broker.
-17 4726 [iot_thread] [INFO] Packet received. ReceivedBytes=2.
-18 4726 [iot_thread] [INFO] Ack packet deserialized with result: MQTTSuccess.
-19 4726 [iot_thread] [INFO] State record updated. New state=MQTTPublishDone.
-20 4727 [iot_thread] [INFO] PUBACK received for packet Id 2.
-21 4757 [iot_thread] [INFO] Packet received. ReceivedBytes=38.
-22 4757 [iot_thread] [INFO] De-serialized incoming PUBLISH packet: DeserializerResult=MQTTSuccess.
-23 4758 [iot_thread] [INFO] State record updated. New state=MQTTPubAckSend.
-24 4758 [iot_thread] [INFO] Incoming QoS : 1
-25 4758 [iot_thread] [INFO] Incoming Publish Topic Name: thing/example/topic matches subscribed topic.Incoming Publish Message : Hello World!
-...
-235 67150 [iot_thread] [INFO] Unsubscribe from the MQTT topic thing/example/topic.
-236 67250 [iot_thread] [INFO] Packet received. ReceivedBytes=2.
-237 67250 [iot_thread] [INFO] Unsubscribed from the topic thing/example/topic.
-238 68250 [iot_thread] [INFO] Disconnecting the MQTT connection with xxx-ats.iot.us-east-2.amazonaws.com.
-239 68250 [iot_thread] [INFO] Disconnected from the broker.
-240 68251 [iot_thread] [INFO] Demo completed an iteration successfully.
-241 68251 [iot_thread] [INFO] Demo iteration 3 completed successfully.
-242 68252 [iot_thread] [INFO] Short delay before starting the next iteration....
-243 73252 [iot_thread] [INFO] Demo run is successful with 3 successful loops out of total 3 loops.
-...
-248 74254 [iot_thread] [INFO ][DEMO][74254] Demo completed successfully.
-249 74254 [iot_thread] [INFO ][INIT][74254] SDK cleanup done.
-250 74255 [iot_thread] [INFO ][DEMO][74254] -------DEMO FINISHED-------
+[...] ---------STARTING DEMO---------
+[...] Creating a TLS connection to xxx-ats.iot.us-east-2.amazonaws.com:8883.
+[...] TLS handshake successful.
+[...] Connection to xxx-ats.iot.us-east-2.amazonaws.com established.
+[...] Creating an MQTT connection to xxx-ats.iot.us-east-2.amazonaws.com.
+[...] An MQTT connection is established with xxx-ats.iot.us-east-2.amazonaws.com.
+[...] Attempt to subscribe to the MQTT topic thing/example/topic.
+[...] SUBSCRIBE sent for topic thing/example/topic to broker.
+[...] Subscribed to the topic thing/example/topic with maximum QoS 1.
+[...] Publish to the MQTT topic thing/example/topic.
+[...] Attempt to receive publish message from broker.
+[...] PUBACK received for packet Id 2.
+[...] Incoming QoS : 1
+[...]
+Incoming Publish Topic Name: thing/example/topic matches subscribed topic.
+Incoming Publish Message : Hello World!
+[...] Keeping Connection Idle...
+[...] Publish to the MQTT topic thing/example/topic.
+[...] Attempt to receive publish message from broker.
+[...] PUBACK received for packet Id 3.
+[...] Incoming QoS : 1
+[...]
+Incoming Publish Topic Name: thing/example/topic matches subscribed topic.
+Incoming Publish Message : Hello World!
+[...] Keeping Connection Idle...
+[...] Publish to the MQTT topic thing/example/topic.
+[...] Attempt to receive publish message from broker.
+[...] PUBACK received for packet Id 4.
+[...] Incoming QoS : 1
+[...]
+Incoming Publish Topic Name: thing/example/topic matches subscribed topic.
+Incoming Publish Message : Hello World!
+[...] Keeping Connection Idle...
+[...] Unsubscribe from the MQTT topic thing/example/topic.
+[...] Unsubscribed from the topic thing/example/topic.
+[...] Disconnecting the MQTT connection with xxx-ats.iot.us-east-2.amazonaws.com.
+[...] TLS close-notify sent.
+[...] prvMQTTDemoTask() completed an iteration successfully. Total free heap is 7440.
+[...] Demo completed successfully.
+[...] -------DEMO FINISHED-------
 ```
 
 The MQTT messages can be viewed in the [**AWS IoT console**](https://docs.aws.amazon.com/iot/latest/developerguide/view-mqtt-messages.html).

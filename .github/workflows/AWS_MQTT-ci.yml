@@ -43,26 +43,31 @@ jobs:
       - name: Configure AWS IoT Thing Credentials
         env:
           # Get the secrets from the Github
-          MQTT_BROKER_ENDPOINT: ${{ secrets.MQTT_BROKER_ENDPOINT }}
           IOT_THING_NAME: ${{ secrets.IOT_THING_NAME }}
+          MQTT_BROKER_ENDPOINT: ${{ secrets.MQTT_BROKER_ENDPOINT }}
+          ROOT_CA_PEM: ${{ secrets.ROOT_CA_PEM }}
           CLIENT_CERTIFICATE_PEM: ${{ secrets.CLIENT_CERTIFICATE_PEM }}
           CLIENT_PRIVATE_KEY_PEM: ${{ secrets.CLIENT_PRIVATE_KEY_PEM }}
 
         run: |
-          pushd amazon-freertos/demos/include/
-          # Add the Client-Certificate Client-Private-Key in aws_clientcredential_keys.h
-          cp aws_clientcredential_keys.h aws_clientcredential_keys.h.in
-          sed -i 's|\(#define keyCLIENT_CERTIFICATE_PEM \).*NULL|\1 ${CLIENT_CERTIFICATE_PEM}|' aws_clientcredential_keys.h.in
-          sed -i 's|\(#define keyCLIENT_PRIVATE_KEY_PEM \).*NULL|\1 ${CLIENT_PRIVATE_KEY_PEM}|' aws_clientcredential_keys.h.in
-          envsubst < aws_clientcredential_keys.h.in > aws_clientcredential_keys.h
+          DEMO_CONFIG="FreeRTOS-Plus/Demo/Config/demo_config.h"
 
-          # Add the Client-Credentials in aws_clientcredential.h
-          cp aws_clientcredential.h aws_clientcredential.h.in
-          sed -i 's|\(#define clientcredentialMQTT_BROKER_ENDPOINT \).*""|\1 "${MQTT_BROKER_ENDPOINT}"|' aws_clientcredential.h.in
-          sed -i 's|\(#define clientcredentialIOT_THING_NAME \).*""|\1 "${IOT_THING_NAME}"|' aws_clientcredential.h.in
-          envsubst < aws_clientcredential.h.in > aws_clientcredential.h
+          cp "$DEMO_CONFIG" "${DEMO_CONFIG}.in"
 
-          popd
+          # Activate the define by replacing the placeholder with the actual value.
+          activate_define() {
+            local define_name="$1"
+            local define_value="$2"
+            sed -i "/^[[:space:]]*\* #define ${define_name}/{N;s|^[[:space:]]*\* #define .*\n[[:space:]]*\*/| */\n#define ${define_name} ${define_value}|;}" "${DEMO_CONFIG}.in"
+          }
+
+          activate_define democonfigCLIENT_IDENTIFIER '"${IOT_THING_NAME}"'
+          activate_define democonfigMQTT_BROKER_ENDPOINT '"${MQTT_BROKER_ENDPOINT}"'
+          activate_define democonfigROOT_CA_PEM '${ROOT_CA_PEM}'
+          activate_define democonfigCLIENT_CERTIFICATE_PEM '${CLIENT_CERTIFICATE_PEM}'
+          activate_define democonfigCLIENT_PRIVATE_KEY_PEM '${CLIENT_PRIVATE_KEY_PEM}'
+
+          envsubst < "${DEMO_CONFIG}.in" > "$DEMO_CONFIG"
 
       # Build the executable
       - name: Build executable
@@ -91,7 +96,7 @@ jobs:
       - name: Analyze results
         run: |
          echo "Checking if a MQTT packet has been received"
-         if [ "$(grep -c "\[iot_thread\] \[INFO\] De-serialized incoming PUBLISH packet: DeserializerResult=MQTTSuccess." ./out/Demo/AWS_MQTT_Demo.log)" -eq 0 ]
+         if [ "$(grep -c "Incoming Publish Message : Hello World!" ./out/Demo/AWS_MQTT_Demo.log)" -eq 0 ]
          then 
                  exit 1
          else 

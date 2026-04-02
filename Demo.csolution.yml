@@ -1,6 +1,6 @@
 solution:
   description: AWS Cloud Connector Example
-  created-for: CMSIS-Toolbox@2.6.0
+  created-for: CMSIS-Toolbox@2.13.0
   cdefault:
 
   select-compiler:
@@ -11,10 +11,10 @@ solution:
 
   packs:
     - pack: ARM::V2M_MPS3_SSE_300_BSP@1.5.0
-# Add BSP pack to use a physical board
-#   - pack: <BSP or DFP>.pack
-# Add pack with shield layers to support Arduino WiFi Shields
-#   - pack: ARM::CMSIS-Driver@2.10.0
+  # Add BSP pack to use a physical board
+  #   - pack: <BSP or DFP>.pack
+  # Add pack with shield layers to support Arduino WiFi Shields
+  #   - pack: ARM::CMSIS-Driver@2.10.0
 
   build-types:
     - type: Debug
@@ -25,21 +25,20 @@ solution:
       optimize: balanced
 
   target-types:
-# This target is a AVH-FVP simulation model that does not require hardware
+    # This target is a AVH-FVP simulation model that does not require hardware
     - type: AVH
       board: ARM::V2M-MPS3-SSE-300-FVP
       variables:
         - Board-Layer: $SolutionDir()$/Board/AVH_MPS3_Corstone-300/Board.clayer.yml
         - Shield-Layer: ""
         - Socket-Layer: $SolutionDir()$/Socket/VSocket/Socket.clayer.yml
-
-# Add a target hardware to use the example on physical hardware 
-  # - type: MyBoard
-    # board: <board name>
-    # variables:
-    #   - Board-Layer: ""
-    #   - Shield-Layer: ""
-    #   - Socket-Layer: ""
+    # Add a target hardware to use the example on physical hardware 
+    # - type: MyBoard
+    #   board: <board name>
+    #   variables:
+    #     - Board-Layer: ""
+    #     - Shield-Layer: ""
+    #     - Socket-Layer: ""
 
   projects:
-    - project: ./Demo.cproject.yml
+    - project: Demo.cproject.yml

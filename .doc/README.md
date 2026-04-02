@@ -9,10 +9,11 @@ actions but are otherwise not accessible. The following GitHub Secrets need to b
 
 GitHub Secret                  | Enables *AWS IoT Thing* Connection
 :------------------------------|:---------------------------------------
+`IOT_THING_NAME`               | Client (device) name
+`MQTT_BROKER_ENDPOINT`         | MQTT broker host name
+`ROOT_CA_PEM`                  | Server (host) root CA certificate
 `CLIENT_CERTIFICATE_PEM`       | Client (device) certificate
 `CLIENT_PRIVATE_KEY_PEM`       | Client (device) private key
-`IOT_THING_NAME`               | Client  (device) name
-`MQTT_BROKER_ENDPOINT`         | MQTT broker host name
 
 ## Format of GitHub Secrets
 
@@ -22,6 +23,7 @@ GitHub Secret name             | Original or issued format           | Github Se
 :------------------------------|:------------------------------------|:---------------------------------------
 `IOT_THING_NAME`               | Single line string without quotes   | Single line string without quotes i.e.  `myIoT_thing_name`
 `MQTT_BROKER_ENDPOINT`         | Single line string without quotes   | Single line string without quotes i.e.  `random-string.abcd.xyz.amazonaws.com`
+`ROOT_CA_PEM`                  | Multiline string. See **F1**.       | Single line string with double quotes and additional new-lines. See **F2**.
 `CLIENT_CERTIFICATE_PEM`       | Multiline string. See **F1**.       | Single line string with double quotes and additional new-lines. See **F2**.
 `CLIENT_PRIVATE_KEY_PEM`       | Multiline string. See **F3**.       | Single line string with double quotes and additional new-lines. See **F4**.
 
@@ -38,7 +40,7 @@ GitHub Secret name             | Original or issued format           | Github Se
 **F2**: The expected Certificate format must be a double-quoted singleline string. i.e.
 
 ```txt
-"-----BEGIN CERTIFICATE-----\n\::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::==\n-----END CERTIFICATE-----\n"
+"-----BEGIN CERTIFICATE-----\n::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::==\n-----END CERTIFICATE-----\n"
 ```
 
 **F3**: The issued Private Key format is a multiline string like:
@@ -53,5 +55,5 @@ GitHub Secret name             | Original or issued format           | Github Se
 **F4**: The expected Private Key format must be a double-quoted singleline string. i.e.
 
 ```txt
-"-----BEGIN RSA PRIVATE KEY-----\n\::::::::::::::::::::::::::::::::::::::::::::::\n-----END RSA PRIVATE KEY-----\n"
+"-----BEGIN RSA PRIVATE KEY-----\n::::::::::::::::::::::::::::::::::::::::::::::\n-----END RSA PRIVATE KEY-----\n"
 ```
