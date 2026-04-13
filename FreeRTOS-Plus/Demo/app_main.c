@@ -24,6 +24,10 @@
 extern int32_t socket_startup (void);
 extern void vStartSimpleMQTTDemo (void);
 
+static const osThreadAttr_t app_main_attr = {
+  .stack_size = 4096U
+};
+
 void vLoggingPrintf( const char * pcFormat,
                      ... )
 {
@@ -60,7 +64,7 @@ int app_main (void) {
 
   osKernelInitialize();
 
-  osThreadNew(app_main_thread, NULL, NULL);
+  osThreadNew(app_main_thread, NULL, &app_main_attr);
 
   osKernelStart();
   return 0;
