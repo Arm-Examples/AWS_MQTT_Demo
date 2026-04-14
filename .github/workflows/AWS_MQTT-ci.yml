@@ -72,13 +72,13 @@ jobs:
       # Build the executable
       - name: Build executable
         run: |
-          cbuild Demo.csolution.yml --packs --context .Debug+AVH --rebuild
+          cbuild Demo.csolution.yml --packs --context .Debug+Simulator --rebuild
 
       # Execute the demo
       - name: Execute AWS_MQTT demo
         run: |
          FVP_Corstone_SSE-300 \
-         -a ./out/Demo/AVH/Debug/Demo.axf \
+         -a ./out/Demo/Simulator/Debug/Demo.axf \
          -f ./Board/AVH_MPS3_Corstone-300/fvp_config.txt \
          --simlimit 120 --stat -Q 10 > ./out/Demo/AWS_MQTT_Demo.log
          cat ./out/Demo/AWS_MQTT_Demo.log

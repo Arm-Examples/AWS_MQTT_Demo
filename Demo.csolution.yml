@@ -25,8 +25,8 @@ solution:
       optimize: balanced
 
   target-types:
-    # This target is a AVH-FVP simulation model that does not require hardware
-    - type: AVH
+    # This target is an AVH-FVP simulation model that does not require hardware
+    - type: Simulator
       board: ARM::V2M-MPS3-SSE-300-FVP
       variables:
         - Board-Layer: $SolutionDir()$/Board/AVH_MPS3_Corstone-300/Board.clayer.yml

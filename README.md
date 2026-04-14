@@ -12,7 +12,7 @@ successfully run the demo application.
 
 ## Requirements
 
-- [AWS Account](https://aws.amazon.com/free) to connect a [*AWS IoT Thing*](https://docs.aws.amazon.com/iot/latest/developerguide/iot-moisture-create-thing.html).
+- [AWS Account](https://aws.amazon.com/free) to connect an [*AWS IoT Thing*](https://docs.aws.amazon.com/iot/latest/developerguide/iot-moisture-create-thing.html).
 - A CMSIS-Toolbox enabled toolchain such as [Keil Studio for VS Code](https://www.keil.arm.com/). The [MDK Community Edition](https://www.keil.arm.com/keil-mdk/#mdk-v6-editions) provides all tools required for evaluation.
 
 ## Project Structure
@@ -41,16 +41,16 @@ To run the demo application [*configure the AWS IoT Thing*](https://docs.aws.ama
   - `democonfigCLIENT_CERTIFICATE_PEM`: Client Certificate
   - `democonfigCLIENT_PRIVATE_KEY_PEM`: Client Private Key
 
-## Run on AVH FVP Simulation Model
+## Run on AVH-FVP Simulation Model
 
-Once the *AWS IoT Thing* is configured it can be build and run on AVH FVP simulation models.
+Once the *AWS IoT Thing* is configured it can be build and run on AVH-FVP simulation models.
 
 ```bash
-cbuild Demo.csolution.yml --context .Debug+AVH --packs
-FVP_Corstone_SSE-300 -f Board/AVH_MPS3_Corstone-300/fvp_config.txt out/Demo/AVH/Debug/Demo.axf -Q 10
+cbuild Demo.csolution.yml --context .Debug+Simulator --packs
+FVP_Corstone_SSE-300 -f Board/AVH_MPS3_Corstone-300/fvp_config.txt out/Demo/Simulator/Debug/Demo.axf -Q 10
 ```
 
-The execution on AVH FVP simulation models should create this output:
+The execution on AVH-FVP simulation models should create this output:
 
 ```txt
 [...] ---------STARTING DEMO---------
@@ -117,7 +117,7 @@ Depending on the selected hardware, the file [`Demo.csolution.yml`](Demo.csoluti
     - pack: ARM::CMSIS-Driver@2.10.0            # Add CMSIS-Driver for WiFi Shields
 
   target-types:
-    - type: AVH
+    - type: Simulator
       board: ARM::V2M-MPS3-SSE-300-FVP
         :
 
@@ -139,7 +139,7 @@ This completes the setup and the file [`Demo.csolution.yml`](Demo.csolution.yml)
 
 ```yml
   target-types:
-    - type: AVH
+    - type: Simulator
       board: ARM::V2M-MPS3-SSE-300-FVP
         :
     - type: MyBoard
