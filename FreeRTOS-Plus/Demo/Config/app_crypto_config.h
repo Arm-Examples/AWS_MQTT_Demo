@@ -36,7 +36,6 @@
 
 /* Platform abstraction layer */
 #define MBEDTLS_PLATFORM_C
-#define MBEDTLS_SELF_TEST
 
 /* Cryptographic mechanism selection (extended API) */
 #define MBEDTLS_MD_C
