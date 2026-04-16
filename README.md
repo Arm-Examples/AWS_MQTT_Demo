@@ -7,12 +7,12 @@ This demo application connects to **AWS MQTT broker** using TLS with mutual auth
 It demonstrates the subscribe-publish workflow of MQTT.
 
 Visit [*coreMQTT Demo (Mutual Authentication)*](https://www.freertos.org/Documentation/03-Libraries/03-FreeRTOS-core/02-coreMQTT/02-Demos/03-Mutual-authentication) for further information. 
-Please note, that [*properly configured thing*](https://docs.aws.amazon.com/iot/latest/developerguide/iot-moisture-create-thing.html) is required to
+Please note, that a [*properly configured thing*](https://docs.aws.amazon.com/iot/latest/developerguide/iot-moisture-create-thing.html) is required to
 successfully run the demo application.
 
 ## Requirements
 
-- [AWS Account](https://aws.amazon.com/free) to connect an [*AWS IoT Thing*](https://docs.aws.amazon.com/iot/latest/developerguide/iot-moisture-create-thing.html).
+- [AWS Account](https://aws.amazon.com/free) to [create the *AWS IoT Thing*](https://docs.aws.amazon.com/iot/latest/developerguide/iot-moisture-create-thing.html).
 - A CMSIS-Toolbox enabled toolchain such as [Keil Studio for VS Code](https://www.keil.arm.com/). The [MDK Community Edition](https://www.keil.arm.com/keil-mdk/#mdk-v6-editions) provides all tools required for evaluation.
 
 ## Project Structure
@@ -32,19 +32,20 @@ Project File                                                                 | D
 
 ## Configure AWS IoT Thing
 
-To run the demo application [*configure the AWS IoT Thing*](https://docs.aws.amazon.com/iot/latest/developerguide/iot-moisture-create-thing.html) with these steps:
+After [creating the *AWS IoT Thing*](https://docs.aws.amazon.com/iot/latest/developerguide/iot-moisture-create-thing.html), the demo application needs to be configured with the relevant information of the AWS IoT Thing. This is done by updating the placeholder definitions in the configuration file.
 
-- Modify the following definitions in [FreeRTOS-Plus/Demo/Config/demo_config.h](FreeRTOS-Plus/Demo/Config/demo_config.h):
+- Copy the file [FreeRTOS-Plus/Demo/Config/demo_config_template.h](FreeRTOS-Plus/Demo/Config/demo_config_template.h) to `FreeRTOS-Plus/Demo/Config/demo_config.h`.
+- Modify the following definitions in `FreeRTOS-Plus/Demo/Config/demo_config.h`:
   - `democonfigCLIENT_IDENTIFIER`: Thing Name (AWS IoT->Manage->Things->Name in AWS IoT console)
   - `democonfigMQTT_BROKER_ENDPOINT`: Remote Host Address (AWS IoT->Settings in AWS IoT console)
   - `democonfigROOT_CA_PEM`: Server's root CA Certificate
   - `democonfigCLIENT_CERTIFICATE_PEM`: Client Certificate
   - `democonfigCLIENT_PRIVATE_KEY_PEM`: Client Private Key
 
-Rather than modifying the definitions manually, you can provide AWS IoT Thing information through [environment variables](.doc/EnvVars.md) and run the script [configure-aws-iot-thing.js](scripts/configure-aws-iot-thing.js). The script updates the relevant defines in the [demo_config.h](FreeRTOS-Plus/Demo/Config/demo_config.h) based on those environment variables. This approach keeps configuration consistent across local development, CI runs on GitHub runners, and cloud environments such as GitHub Codespaces. Ensure that the relevant [environment variables](.doc/EnvVars.md) are correctly set and execute the script with:
+Rather than copying the template and modifying the definitions manually, you can provide AWS IoT Thing information through [environment variables](.doc/EnvVars.md) and run the script [configure-aws-iot-thing.js](scripts/configure-aws-iot-thing.js). The script updates the relevant defines based on those environment variables. This approach keeps configuration consistent across local development, CI runs on GitHub runners, and cloud environments such as GitHub Codespaces. Ensure that the relevant [environment variables](.doc/EnvVars.md) are correctly set and execute the script with:
 
 ```bash
-node ./scripts/configure-aws-iot-thing.js ./FreeRTOS-Plus/Demo/Config/demo_config.h
+node ./scripts/configure-aws-iot-thing.js ./FreeRTOS-Plus/Demo/Config/demo_config_template.h ./FreeRTOS-Plus/Demo/Config/demo_config.h
 ```
 
 or run the task `Configure AWS IoT Thing` when using VS Code.

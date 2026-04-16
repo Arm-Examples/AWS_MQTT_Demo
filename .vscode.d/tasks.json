@@ -6,7 +6,8 @@
             "type": "shell",
             "command": "node",
             "args": [
-                "scripts/configure-aws-iot-thing.js",
+                "./scripts/configure-aws-iot-thing.js",
+                "./FreeRTOS-Plus/Demo/Config/demo_config_template.h",
                 "./FreeRTOS-Plus/Demo/Config/demo_config.h"
             ],
             "group": "build"

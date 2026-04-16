@@ -43,7 +43,9 @@ jobs:
           CLIENT_PRIVATE_KEY_PEM: ${{ secrets.CLIENT_PRIVATE_KEY_PEM }}
 
         run: |
-          node ./scripts/configure-aws-iot-thing.js ./FreeRTOS-Plus/Demo/Config/demo_config.h
+          node ./scripts/configure-aws-iot-thing.js \
+            ./FreeRTOS-Plus/Demo/Config/demo_config_template.h \
+            ./FreeRTOS-Plus/Demo/Config/demo_config.h
 
       # Build the executable
       - name: Build executable

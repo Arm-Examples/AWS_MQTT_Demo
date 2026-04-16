@@ -27,35 +27,39 @@
 //   CLIENT_CERTIFICATE_PEM   - Client certificate (PEM format)
 //   CLIENT_PRIVATE_KEY_PEM   - Client private key (PEM format)
 //
-// Usage: node configure-aws-iot-thing.js <path-to-demo_config.h>
+// Usage: node configure-aws-iot-thing.js <input-file> <output-file>
 
 const fs = require("node:fs");
 const path = require("node:path");
 
-let configFilePath;
+let inputFilePath;
+let outputFilePath;
 
-function getConfigFilePathFromArgs()
+function getFilePathsFromArgs()
 {
-    const configPath = process.argv[2];
+    const inputPath = process.argv[2];
+    const outputPath = process.argv[3];
 
-    if (!configPath)
+    if (!inputPath || !outputPath)
     {
-        throw new Error("Missing config file path argument. Usage: node configure-aws-iot-thing.js <path-to-demo_config.h>");
+        throw new Error("Missing file path arguments! \nUsage: node configure-aws-iot-thing.js <input-file> <output-file>");
     }
 
-    const resolvedPath = path.resolve(process.cwd(), configPath);
+    const resolvedInputPath = path.resolve(process.cwd(), inputPath);
 
-    if (!fs.existsSync(resolvedPath))
+    if (!fs.existsSync(resolvedInputPath))
     {
-        throw new Error(`Config file does not exist: ${resolvedPath}`);
+        throw new Error(`Input file does not exist: ${resolvedInputPath}`);
     }
 
-    if (!fs.statSync(resolvedPath).isFile())
+    if (!fs.statSync(resolvedInputPath).isFile())
     {
-        throw new Error(`Config path is not a file: ${resolvedPath}`);
+        throw new Error(`Input path is not a file: ${resolvedInputPath}`);
     }
 
-    return resolvedPath;
+    const resolvedOutputPath = path.resolve(process.cwd(), outputPath);
+
+    return [resolvedInputPath, resolvedOutputPath];
 }
 
 function getEnvVariable(name)
@@ -94,14 +98,14 @@ function setDefine(content, name, value)
         return content.replace(placeholderPattern, ` */\n#define ${name} ${value}`);
     }
 
-    throw new Error(`Unable to locate placeholder for ${name} in ${configFilePath}.`);
+    throw new Error(`Unable to locate placeholder for ${name} in ${inputFilePath}.`);
 }
 
 try
 {
     console.log("AWS IoT Thing configuration based on environment variables...");
 
-    configFilePath = getConfigFilePathFromArgs();
+    [inputFilePath, outputFilePath] = getFilePathsFromArgs();
 
     const definitions = [
         ["democonfigCLIENT_IDENTIFIER",      formatStr(getEnvVariable("IOT_THING_NAME"))],
@@ -111,16 +115,17 @@ try
         ["democonfigCLIENT_PRIVATE_KEY_PEM", formatPEM(getEnvVariable("CLIENT_PRIVATE_KEY_PEM"))],
     ];
 
-    let content = fs.readFileSync(configFilePath, "utf8");
+    let content = fs.readFileSync(inputFilePath, "utf8");
 
     for (const [name, value] of definitions)
     {
         content = setDefine(content, name, value);
     }
 
-    fs.writeFileSync(configFilePath, content, "utf8");
+    fs.writeFileSync(outputFilePath, content, "utf8");
 
-    console.log(`Configured ${path.relative(process.cwd(), configFilePath)}`);
+    console.log(`Input:  ${inputFilePath}`);
+    console.log(`Output: ${outputFilePath}`);
 }
 catch (error)
 {

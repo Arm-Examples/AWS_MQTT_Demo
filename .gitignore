@@ -85,3 +85,6 @@ uv2csolution.log
 
 # legacy intermediate project file
 *.cprj
+
+# Demo configuration file with secrets
+FreeRTOS-Plus/Demo/Config/demo_config.h
