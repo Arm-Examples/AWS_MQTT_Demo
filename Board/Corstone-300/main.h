@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------
- * Copyright (c) 2021 Arm Limited (or its affiliates). All rights reserved.
- *
+ * Copyright (c) 2020-2025 Arm Limited (or its affiliates).
+ * All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  *
  * Licensed under the Apache License, Version 2.0 (the License); you may
@@ -16,15 +16,23 @@
  * limitations under the License.
  *---------------------------------------------------------------------------*/
 
-#include "RTE_Components.h"
-#include  CMSIS_device_header
-#include "cmsis_vio.h"
+#ifndef MAIN_H__
+#define MAIN_H__
 
-#include "main.h"
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-int main (void) {
+/* Prototypes */
+extern int app_main (void);
+extern int stdio_init (void);
 
-  vioInit();                            // Initialize Virtual I/O
+#if defined(ETHOSU_ARCH)
+extern void ethos_setup (void);
+#endif
 
-  return (app_main());
+#ifdef __cplusplus
 }
+#endif
+
+#endif

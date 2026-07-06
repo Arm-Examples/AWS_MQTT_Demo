@@ -1,5 +1,5 @@
 /*---------------------------------------------------------------------------
- * Copyright (c) 2023 Arm Limited (or its affiliates).
+ * Copyright (c) 2025 Arm Limited (or its affiliates).
  * All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -16,10 +16,22 @@
  * limitations under the License.
  *---------------------------------------------------------------------------*/
 
-#ifndef AVH_MPS3_Corstone_300_H_
-#define AVH_MPS3_Corstone_300_H_
+#ifndef CORSTONE_300_H_
+#define CORSTONE_300_H_
 
-// CMSIS Driver instances
-#define CMSIS_DRIVER_ETH        0
+#include "Driver_USART.h"
 
-#endif /* AVH_MPS3_Corstone_300_H_ */
+// CMSIS Driver instances of Board peripherals
+#define CMSIS_DRIVER_USART  0  // CMSIS Driver USART instance number
+
+// Retarget stdio to CMSIS UART
+#define RETARGET_STDIO_UART 0
+
+// CMSIS Drivers
+extern ARM_DRIVER_USART Driver_USART0;          /* Serial           */
+
+#ifdef CMSIS_shield_header
+#include CMSIS_shield_header
+#endif
+
+#endif /* CORSTONE_300_H_ */

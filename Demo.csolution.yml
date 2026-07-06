@@ -29,7 +29,7 @@ solution:
     - type: Simulator
       board: ARM::V2M-MPS3-SSE-300-FVP
       variables:
-        - Board-Layer: $SolutionDir()$/Board/AVH_MPS3_Corstone-300/Board.clayer.yml
+        - Board-Layer: $SolutionDir()$/Board/Corstone-300/Board.clayer.yml
         - Shield-Layer: ""
         - Socket-Layer: $SolutionDir()$/Socket/VSocket/Socket.clayer.yml
       target-set:
@@ -39,7 +39,7 @@ solution:
           debugger:
             name: Arm-FVP
             model: FVP_Corstone_SSE-300
-            config-file: Board/AVH_MPS3_Corstone-300/fvp_config.txt
+            config-file: Board/Corstone-300/fvp_config.txt
             args: -Q 10
     # Add a target hardware to use the example on physical hardware 
     # - type: MyBoard

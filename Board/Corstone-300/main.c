@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------
- * Copyright (c) 2020-2021 Arm Limited (or its affiliates).
- * All rights reserved.
+ * Copyright (c) 2024 Arm Limited (or its affiliates). All rights reserved.
+ *
  * SPDX-License-Identifier: Apache-2.0
  *
  * Licensed under the Apache License, Version 2.0 (the License); you may
@@ -16,12 +16,20 @@
  * limitations under the License.
  *---------------------------------------------------------------------------*/
 
-#ifndef MAIN_H__
-#define MAIN_H__
+#include "RTE_Components.h"
+#include  CMSIS_device_header
 
-#include <stdint.h>
+#include "main.h"
 
-/* Prototypes */
-extern int app_main (void);
+int main (void) {
 
-#endif
+  /* Initialize STDIO */
+  stdio_init();
+
+  #if defined(ETHOSU_ARCH)
+  /* Initialize Ethos NPU */
+  ethos_setup();
+  #endif
+
+  return (app_main());
+}

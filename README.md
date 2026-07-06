@@ -48,7 +48,7 @@ Once the *AWS IoT Thing* is configured it can be built and run on AVH-FVP simula
 
 ```bash
 cbuild Demo.csolution.yml --context .Debug+Simulator --packs
-FVP_Corstone_SSE-300 -f Board/AVH_MPS3_Corstone-300/fvp_config.txt out/Demo/Simulator/Debug/Demo.axf -Q 10
+FVP_Corstone_SSE-300 -f Board/Corstone-300/fvp_config.txt out/Demo/Simulator/Debug/Demo.axf -Q 10
 ```
 
 The execution on AVH-FVP simulation models should create this output:
